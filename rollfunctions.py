@@ -28,4 +28,7 @@ def get_mats_from_item(item):
         # Add random values to pick if mats drop or not (ndrop and rdrop%)
         # If ndrop and rdrop pass, randint between lcount and hcount
         # Return value
+    # Other things to do:
+        # Add a way to count for multiple iterations of something (ie, a cube has two "Hot" tags)
+        # This bumps min by +(minval) and max by +(maxval) (ie, 1-32 --> 2-64)
     
