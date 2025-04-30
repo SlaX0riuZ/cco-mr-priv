@@ -46,3 +46,17 @@ def get_matnames_from_cube(item): # <<CHECKED AND WORKS AS INTENDED>>
         else:
             raise ValueError('---FATAL ERROR---: Invalid Material Name Input. Check terminal.') # Raise error if invalid material name (won't get raised if something is right)
     return oarr
+
+# Function to roll and pick a cube based off of roll chances from a given series
+def roll_cube_from_series(series): # <<CHECKED AND WORKS AS INTENDED>>
+    rollnumceiling, rolledcubeindex = 0, -1
+    for cube in series:
+        rollnumceiling += cube[2] # Add roll chance from cube (ex: 13.33, 27.28)
+    rollnum = randfloat(0, rollnumceiling) # Random number from 0 to total roll ceiling (should be ~100)
+    while rollnum > 0:
+        rolledcubeindex += 1
+        try:
+            rollnum -= series[rolledcubeindex][2] # decreases rollnum by cube's roll chance
+        except:
+            rollnum = rolledcubeindex = -1
+    return series[rolledcubeindex]
