@@ -4,6 +4,8 @@ import seriesconfig as sc
 import rarityconfig as rc
 import math, random
 
+''' Functions for Utility '''
+
 # Function for returning series off of text input
 def text_to_series(txt): # <<CHECKED AND WORKS AS INTENDED>>
     for s in range(len(sc.series_text_list)):
@@ -20,6 +22,8 @@ def create_empty_array(alength, emptyfill=0): # <<CHECKED AND WORKS AS INTENDED>
 
 def randfloat(a, b): # <<CHECKED AND WORKS AS INTENDED>>
     return a + ((b - a) * random.random()) # bypassing the random.randrange()'s integer limitations
+
+''' Functions for Cube Rolling/Mats/Rarity, etc. '''
 
 # Function to get number of dropped items, given the rarity.
 def get_mats_from_cuberarity(rarity, iterations, nrbool=False): # <<CHECKED AND WORKS AS INTENDED>>
