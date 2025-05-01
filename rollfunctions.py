@@ -42,7 +42,7 @@ def get_mats_from_cuberarity(rarity, iterations, nrbool=False): # <<CHECKED AND 
 
 # Function to get array of all counts of mat's name inside of a specific cube
 def get_matnames_from_cube(item): # <<CHECKED AND WORKS AS INTENDED>>
-    oarr = create_empty_array(25) # fill with normal mat count of names
+    oarr = create_empty_array(26) # fill with normal mat count of names
     for i in range(len(item) - 3):
         itemname = item[i+3] # itemname is a string, like "Resin" or "Shards"
         if itemname in mc.mat_called_name:
@@ -64,3 +64,20 @@ def roll_cube_from_series(series): # <<CHECKED AND WORKS AS INTENDED>>
         except:
             rollnum = rolledcubeindex = -1
     return series[rolledcubeindex]
+
+# Function to link 'get_mats_from_cuberarity' to 'get_matnames_from_cube', returning an array of materials given a cube
+def matarray_from_cube(cube): # <<CHECKED AND WORKS AS INTENDED>>
+    # cube is imported as cube's array, ex: ["no", "e", 2.20, "heavy", "hard"]
+    oarr = create_empty_array(33) # start with an array of all zeroes
+    mlist = get_matnames_from_cube(cube) # get matname array from cube
+    print(mlist)
+    for nmindex in range(0, 26):
+        if mlist[nmindex] > 0: # if there's at least 1 iteration of a given mat
+            oarr[nmindex] = get_mats_from_cuberarity(cube[1], mlist[nmindex], False) # add mat rolls to cube's array
+    rmtick = 26 # set tick to 26, starting position of raremats in typical mat array
+    for rmindex in [10, 1, 13, 2, 18, 14, 25]:
+        if (mlist[rmindex] > 0) and (cube[1] not in ['c', 'u', 'r', 'e', 'sp']):
+            oarr[rmtick] = get_mats_from_cuberarity(cube[1], mlist[rmindex], True) # add mat rolls to cube's array
+    return oarr
+
+

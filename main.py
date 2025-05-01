@@ -5,3 +5,4 @@ from cubelist import *
 # print(get_mats_from_cuberarity('c', 1))
 # print(get_matnames_from_cube(hazardous[-1]))
 # print(roll_cube_from_series(series_1))
+# print(matarray_from_cube(series_1[-1]))
