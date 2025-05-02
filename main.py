@@ -1,8 +1,5 @@
 from rollfunctions import *
 from cubelist import *
+from seriesconfig import *
 
-# print(create_empty_array(2))
-# print(get_mats_from_cuberarity('c', 1))
-# print(get_matnames_from_cube(hazardous[-1]))
-# print(roll_cube_from_series(series_1))
-# print(matarray_from_cube(series_1[-1]))
+material_rank_with_spincount("Dyes", 1000)

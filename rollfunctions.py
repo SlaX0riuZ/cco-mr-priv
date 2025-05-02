@@ -7,10 +7,15 @@ import math, random
 ''' Functions for Utility '''
 
 # Function for returning series off of text input
-def text_to_series(txt): # <<CHECKED AND WORKS AS INTENDED>>
-    for s in range(len(sc.series_text_list)):
-        if txt == sc.series_text_list[s]:
-            return sc.series_true_list[s] # Match positions of stextlist vs struelist
+def text_to_series(txt, reverse=False): # <<CHECKED AND WORKS AS INTENDED>>
+    if reverse: # Series -> Text
+        for s in range(len(sc.series_true_list)):
+            if txt == sc.series_true_list[s]:
+                return sc.series_text_list[s] # Match positions of struelist vs stextlist
+    else: # text -> Series
+        for s in range(len(sc.series_text_list)):
+            if txt == sc.series_text_list[s]:
+                return sc.series_true_list[s] # Match positions of stextlist vs struelist
     raise ValueError('---FATAL ERROR---: Invalid Series Input. Check terminal.') # Raise error if invalid series (won't get raised if something is returned)
 
 # Function to create an empty array with specific length, and specific items to fill it with
@@ -70,7 +75,6 @@ def matarray_from_cube(cube): # <<CHECKED AND WORKS AS INTENDED>>
     # cube is imported as cube's array, ex: ["no", "e", 2.20, "heavy", "hard"]
     oarr = create_empty_array(33) # start with an array of all zeroes
     mlist = get_matnames_from_cube(cube) # get matname array from cube
-    print(mlist)
     for nmindex in range(0, 26):
         if mlist[nmindex] > 0: # if there's at least 1 iteration of a given mat
             oarr[nmindex] = get_mats_from_cuberarity(cube[1], mlist[nmindex], False) # add mat rolls to cube's array
@@ -79,5 +83,35 @@ def matarray_from_cube(cube): # <<CHECKED AND WORKS AS INTENDED>>
         if (mlist[rmindex] > 0) and (cube[1] not in ['c', 'u', 'r', 'e', 'sp']):
             oarr[rmtick] = get_mats_from_cuberarity(cube[1], mlist[rmindex], True) # add mat rolls to cube's array
     return oarr
+
+# Function to spin a certain amount of a series, returning the final material array
+def spin_with_count(series, count): # <<CHECKED AND WORKS AS INTENDED>>
+    oarr = create_empty_array(33) # start with array of all zeroes
+    for _ in range(count):
+        spuncubematlist = matarray_from_cube(roll_cube_from_series(series)) # spin cube from series
+        for j in range(33):
+            oarr[j] += spuncubematlist[j] # add rolled cube's mats to empty array number
+    oarr.append(text_to_series(series, True))
+    return oarr
+
+# Function to rank top 5 series based off of highest count of material
+def material_rank_with_spincount(material, spincount):
+    oarr = create_empty_array(5, ['0', 0]) # these will be the five held positions
+    try:
+        mindex = mc.mat_display_name.index(material) # get index of material
+    except ValueError:
+        raise ValueError("Invalid material name.") # raise error if material is nonexistent
+    for series in sc.series_true_list:
+        sarray = spin_with_count(series, spincount) # the spun array, saved once as to not spin multiple times to reduce computations
+        for pos in range(5):
+            if sarray[mindex] > oarr[pos][1]:
+                oarr[pos][0] = sarray[-1] # series name for indicator
+                oarr[pos][1] = sarray[mindex] # and the material number to match
+                break # break loop to avoid double-positioning
+    print(f'Ranked Material: {material}')
+    for pos2 in range(5):
+        print(f'Rank #{pos2+1}: {oarr[pos][0]} - {oarr[pos][1]}')
+
+
 
 
