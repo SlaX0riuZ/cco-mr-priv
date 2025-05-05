@@ -96,21 +96,26 @@ def spin_with_count(series, count): # <<CHECKED AND WORKS AS INTENDED>>
 
 # Function to rank top 5 series based off of highest count of material
 def material_rank_with_spincount(material, spincount):
-    oarr = create_empty_array(5, ['0', 0]) # these will be the five held positions
+    oarr = create_empty_array(5, ['0', 0]) # these will be the X held positions
+    sarray = []
     try:
         mindex = mc.mat_display_name.index(material) # get index of material
     except ValueError:
         raise ValueError("Invalid material name.") # raise error if material is nonexistent
     for series in sc.series_true_list:
-        sarray = spin_with_count(series, spincount) # the spun array, saved once as to not spin multiple times to reduce computations
-        for pos in range(5):
-            if sarray[mindex] > oarr[pos][1]:
-                oarr[pos][0] = sarray[-1] # series name for indicator
-                oarr[pos][1] = sarray[mindex] # and the material number to match
-                break # break loop to avoid double-positioning
+        sinparray = spin_with_count(series, spincount) # the spun array, saved once as to not spin multiple times to reduce computations
+        sarray.append([ sinparray[-1], sinparray[mindex] ]) # ex. ['7', 296]
+    for series in range(len(sarray)): # for series in spun array
+        for pos in range(5): # for position in range of held position array
+            if sarray[series][1] > oarr[pos][1]:
+                oarr.pop(4)
+                oarr.insert(pos, [sarray[series][0], sarray[series][1]])
+                break
     print(f'Ranked Material: {material}')
-    for pos2 in range(5):
-        print(f'Rank #{pos2+1}: {oarr[pos][0]} - {oarr[pos][1]}')
+    for p2 in range(5):
+        print(f'Rank #{p2+1}: {oarr[p2][0]} - {oarr[p2][1]}')
+
+
 
 
 
